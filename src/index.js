@@ -87,7 +87,9 @@ socketIO.on('connection', (socket) => {
     });
 });
 
-
+app.use('/', (req, res) => {
+    res.send('Xin chao cac ban toi ung dung messages realtime cua Luong The Tai')
+})
 app.use('/account', accountRouter)
 app.use('/users', userRouter)
 app.use('/conversations', conversationRouter)
