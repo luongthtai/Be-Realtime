@@ -33,14 +33,15 @@ const socketIO = require('socket.io')(http, {
     }
 });
 
-var userAccess = []
+const userAccess = []
 
 //Add this before the app.get() block
 socketIO.on('connection', (socket) => {
-    // console.log(`⚡: ${socket.id} online!`); 
+    // console.log(userAccess);
 
     socket.on('login', data => {
-        userAccess.push(data)
+        userAccess.push(socket.id)
+        accountController.loginSocket(socketIO, data)
     })
 
     socket.on('users', (data) => {
@@ -87,14 +88,15 @@ socketIO.on('connection', (socket) => {
     });
 });
 
-app.use('/', (req, res) => {
-    res.send('Xin chao cac ban toi ung dung messages realtime cua Luong The Tai')
-})
+// app.use('/', (req, res) => {
+//     res.send('Xin chao cac ban toi ung dung messages realtime cua Luong The Tai')
+// })
+
 app.use('/account', accountRouter)
 app.use('/users', userRouter)
 app.use('/conversations', conversationRouter)
 app.use('/message', messageRouter)
 
-const port = 4000
+const port = process.env.SERVER_PORT || 4000
 
 http.listen(port, () => console.log(`http://localhost:${port}`));
